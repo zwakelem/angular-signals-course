@@ -1,8 +1,6 @@
-import {Component, inject} from '@angular/core';
-import {Router, RouterLink} from "@angular/router";
-import {AuthService} from "../services/auth.service";
-import {MessagesService} from "../messages/messages.service";
-import {FormBuilder, ReactiveFormsModule} from "@angular/forms";
+import { Component, inject } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
+import { RouterLink } from "@angular/router";
 
 @Component({
     selector: 'login',
@@ -15,5 +13,10 @@ import {FormBuilder, ReactiveFormsModule} from "@angular/forms";
 })
 export class LoginComponent {
 
+  fb = inject(FormBuilder);
+  loginForm = this.fb.group({
+    email: ['', Validators.email],
+    password: ['']
+  });
 
 }

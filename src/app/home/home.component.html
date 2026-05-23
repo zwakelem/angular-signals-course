@@ -1,8 +1,8 @@
 <div class="courses-panel">
 
-  <h3>All Courses</h3>
-
-  <button class="btn">
+  <h3>All Courses:</h3>
+  
+  <button class="btn" (click)="onAddCourse()">
     Add Course
   </button>
 
@@ -10,12 +10,21 @@
 
     <mat-tab label="Beginners">
 
-
+      <courses-card-list 
+        [courses]="beginnerCourses()"
+        (courseUpdated)="onCourseUpdated($event)"
+        (courseDeleted)="onCourseDeleted($event)"
+      />
 
     </mat-tab>
 
     <mat-tab label="Advanced">
 
+      <courses-card-list 
+        [courses]="advancedCourses()"
+        (courseUpdated)="onCourseUpdated($event)"
+        (courseDeleted)="onCourseDeleted($event)"
+      />
 
     </mat-tab>
 

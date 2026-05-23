@@ -1,5 +1,5 @@
-import {Request, Response} from 'express';
-import {COURSES} from "./db-data";
+import { Request, Response } from 'express';
+import { COURSES } from "./db-data";
 
 
 
@@ -17,7 +17,7 @@ export function getAllCourses(req: Request, res: Response) {
 
     res.status(200).json({courses:Object.values(COURSES)});
 
-  }, 1500);
+  }, 3000);
 
 
 }
