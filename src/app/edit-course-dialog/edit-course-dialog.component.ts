@@ -1,9 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef } from "@angular/material/dialog";
 import { firstValueFrom } from 'rxjs';
 import { CourseCategoryComboboxComponent } from "../course-category-combobox/course-category-combobox.component";
 import { LoadingIndicatorComponent } from "../loading/loading.component";
+import { CourseCategory } from '../models/course-category.model';
 import { Course } from '../models/course.model';
 import { CoursesService } from '../services/courses.service';
 import { EditCourseDialogData } from './edit-course-dialog.data.model';
@@ -26,17 +27,24 @@ export class EditCourseDialogComponent {
   form = this.fb.group({
     title: [''],
     longDescription: [''],
-    category: [''],
     iconUrl: [''],
   });
   courseService = inject(CoursesService);
+  // this signal is bi-directional between this parent component
+  // and child component CourseCategoryComboboxComponent 
+  // we use the "value" attribute to bind this "category" signal
+  // to the signal in the child component named "value"
+  category = signal<CourseCategory>('BEGINNER');
 
   constructor() {
     this.form.patchValue({
       title: this.data?.course?.title,
       longDescription: this.data?.course?.longDescription,
-      category: this.data?.course?.category,
       iconUrl: this.data?.course?.iconUrl,
+    });
+    this.category.set(this.data?.course?.category ?? 'BEGINNER');
+    effect(() => {
+      console.log(`Course category bi-directional binding: ${this.category}`);
     });
   }
 
@@ -46,9 +54,10 @@ export class EditCourseDialogComponent {
 
   async onSave() {
     const courseProps = this.form.value as Partial<Course>;
-    if (this.data.mode === "update") {
+    courseProps.category = this.category();
+    if (this.data.mode === 'update') {
       this.updateCourse(this.data?.course!.id, courseProps);
-    } else if (this.data.mode === "create") {
+    } else if (this.data.mode === 'create') {
       await this.createCourse(courseProps);
     }
   }
@@ -57,25 +66,24 @@ export class EditCourseDialogComponent {
     try {
       const newCourse = await this.courseService.createCourse(course);
       this.dialogRef.close(newCourse);
-    } catch(err) {
+    } catch (err) {
       console.log(err);
       alert('Error creating course');
     }
-
-    
   }
 
   async updateCourse(courseId: string, changes: Partial<Course>) {
     try {
-      const updatedCourse = await this.courseService.updateCourse(courseId, changes);
+      const updatedCourse = await this.courseService.updateCourse(
+        courseId,
+        changes,
+      );
       this.dialogRef.close(updatedCourse);
     } catch (err) {
       console.error(err);
       alert(`Failed to update the course`);
     }
   }
-
-
 }
 
 export async function openEditCourseDialog(dialog: MatDialog, data: EditCourseDialogData) {
