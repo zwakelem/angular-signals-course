@@ -6,7 +6,6 @@ import { SkipLoading } from "../loading/skip-loading.component";
 import { Course } from "../models/course.model";
 import { GetCoursesResponse } from "../models/get-courses.response";
 
-
 @Injectable({
   providedIn: "root"
 })
@@ -23,6 +22,11 @@ export class CoursesService {
 
   async createCourse(course: Partial<Course>): Promise<Course> {
     const course$ = this.http.post<Course>(`${this.env.apiRoot}/courses`, course);
+    return firstValueFrom(course$);
+  }
+
+  async getCourseById(courseId: string): Promise<Course> {
+    const course$ = this.http.get<Course>(`${this.env.apiRoot}/courses/${courseId}`);
     return firstValueFrom(course$);
   }
 
