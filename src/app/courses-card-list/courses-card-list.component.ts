@@ -1,4 +1,4 @@
-import { Component, inject, input, output } from '@angular/core';
+import { Component, effect, ElementRef, inject, input, output, viewChildren } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { RouterLink } from "@angular/router";
 import { openEditCourseDialog } from '../edit-course-dialog/edit-course-dialog.component';
@@ -11,13 +11,21 @@ import { Course } from "../models/course.model";
   styleUrl: './courses-card-list.component.scss',
 })
 export class CoursesCardListComponent {
-  // an input signal that is required/mandatory
   courses = input.required<Course[]>();
+
   courseUpdated = output<Course>();
+
   courseDeleted = output<string>();
+
   dialog = inject(MatDialog);
 
-  constructor() {}
+  courseCards = viewChildren<ElementRef>('courseCard');
+
+  constructor() {
+    effect(() => {
+      console.log(`courseCards`, this.courseCards());
+    })
+  }
 
   async onEditCourse(course: Course) {
     const newCourse = await openEditCourseDialog(this.dialog, {
@@ -25,7 +33,7 @@ export class CoursesCardListComponent {
       title: 'Update Existing Course',
       course,
     });
-    if(!newCourse) {
+    if (!newCourse) {
       return;
     }
     console.log(`Course edited:`, newCourse);

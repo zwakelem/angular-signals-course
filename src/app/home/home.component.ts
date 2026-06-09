@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal, viewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup } from "@angular/material/tabs";
 import { CoursesCardListComponent } from "../courses-card-list/courses-card-list.component";
@@ -31,7 +31,14 @@ export class HomeComponent implements OnInit {
   dialog = inject(MatDialog);
   messageService = inject(MessagesService);
 
+  beginnersList = viewChild<CoursesCardListComponent>('beginnersList');
+  // advancedList = viewChild<CoursesCardListComponent>('advancedList');
+
   constructor() {
+    effect(() => {
+      console.log(`beginnersList: `, this.beginnersList());
+    });
+
     effect(() => {
       console.log(`Beginner courses: `, this.beginnerCourses());
       console.log(`Advanced courses: `, this.advancedCourses());
@@ -55,7 +62,7 @@ export class HomeComponent implements OnInit {
     } catch (err) {
       this.messageService.showMessage(`Error loading courses`, 'error');
       console.error(err);
-    } 
+    }
   }
 
   onCourseUpdated(updatedCourse: Course) {
@@ -82,17 +89,14 @@ export class HomeComponent implements OnInit {
 
   async onAddCourse() {
     const newCourse = await openEditCourseDialog(this.dialog, {
-      mode: "create",
-      title: "Create New Course"
+      mode: 'create',
+      title: 'Create New Course',
     });
 
-    if(!newCourse) {
+    if (!newCourse) {
       return;
     }
-    const newCourses = [
-      ...this.#courses(),
-      newCourse
-    ];
+    const newCourses = [...this.#courses(), newCourse];
     this.#courses.set(newCourses);
   }
 }
