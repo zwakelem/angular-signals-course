@@ -1,4 +1,5 @@
 import { Component, computed, effect, inject, OnInit, signal, viewChild } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup } from "@angular/material/tabs";
 import { CoursesCardListComponent } from "../courses-card-list/courses-card-list.component";
@@ -34,19 +35,25 @@ export class HomeComponent implements OnInit {
   beginnersList = viewChild<CoursesCardListComponent>('beginnersList');
   // advancedList = viewChild<CoursesCardListComponent>('advancedList');
 
+  courses$ = toObservable(this.#courses);
+
   constructor() {
+
+    this.courses$.subscribe(courses => console.log(`courses$`, courses));  
+
     effect(() => {
-      console.log(`beginnersList: `, this.beginnersList());
+      // console.log(`beginnersList: `, this.beginnersList());
     });
 
     effect(() => {
-      console.log(`Beginner courses: `, this.beginnerCourses());
-      console.log(`Advanced courses: `, this.advancedCourses());
+      // console.log(`Beginner courses: `, this.beginnerCourses());
+      // console.log(`Advanced courses: `, this.advancedCourses());
     });
 
-    this.loadCourses().then(() =>
-      console.log(`All courses loaded:`, this.#courses()),
-    );
+    this.loadCourses();
+    // .then(() =>
+    //   console.log(`All courses loaded:`, this.#courses()),
+    // );
   }
 
   ngOnInit(): void {
