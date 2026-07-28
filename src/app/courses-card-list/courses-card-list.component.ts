@@ -1,4 +1,4 @@
-import { Component, effect, ElementRef, inject, input, output, viewChildren } from '@angular/core';
+import { Component, effect, ElementRef, inject, input, output, viewChildren, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { RouterLink } from "@angular/router";
 import { openEditCourseDialog } from '../edit-course-dialog/edit-course-dialog.component';
@@ -8,6 +8,7 @@ import { Course } from "../models/course.model";
   selector: 'courses-card-list',
   imports: [RouterLink],
   templateUrl: './courses-card-list.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './courses-card-list.component.scss',
 })
 export class CoursesCardListComponent {

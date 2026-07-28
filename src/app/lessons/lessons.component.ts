@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, signal, viewChild } from '@angular/core';
+import { Component, ElementRef, inject, signal, viewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Lesson } from "../models/lesson.model";
 import { LessonsService } from "../services/lessons.service";
 import { LessonDetailComponent } from "./lesson-detail/lesson-detail.component";
@@ -7,6 +7,7 @@ import { LessonDetailComponent } from "./lesson-detail/lesson-detail.component";
   selector: 'lessons',
   imports: [LessonDetailComponent],
   templateUrl: './lessons.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './lessons.component.scss',
 })
 export class LessonsComponent {

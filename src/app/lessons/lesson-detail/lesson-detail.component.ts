@@ -1,4 +1,4 @@
-import { Component, inject, input, output } from '@angular/core';
+import { Component, inject, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { ReactiveFormsModule } from "@angular/forms";
 import { MessagesService } from '../../messages/messages.service';
 import { Lesson } from "../../models/lesson.model";
@@ -8,6 +8,7 @@ import { LessonsService } from '../../services/lessons.service';
   selector: 'lesson-detail',
   imports: [ReactiveFormsModule],
   templateUrl: './lesson-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './lesson-detail.component.scss',
 })
 export class LessonDetailComponent {

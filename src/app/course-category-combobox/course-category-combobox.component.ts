@@ -1,4 +1,4 @@
-import { Component, contentChild, effect, ElementRef, input, model } from '@angular/core';
+import { Component, contentChild, effect, ElementRef, input, model, ChangeDetectionStrategy } from '@angular/core';
 import { CourseCategory } from '../models/course-category.model';
 
 @Component({
@@ -6,6 +6,7 @@ import { CourseCategory } from '../models/course-category.model';
   standalone: true,
   imports: [],
   templateUrl: './course-category-combobox.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './course-category-combobox.component.scss',
 })
 export class CourseCategoryComboboxComponent {

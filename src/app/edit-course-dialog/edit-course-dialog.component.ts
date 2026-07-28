@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef } from "@angular/material/dialog";
 import { firstValueFrom } from 'rxjs';
@@ -18,6 +18,7 @@ import { EditCourseDialogData } from './edit-course-dialog.data.model';
     CourseCategoryComboboxComponent,
   ],
   templateUrl: './edit-course-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './edit-course-dialog.component.scss',
 })
 export class EditCourseDialogComponent {

@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, OnInit, signal, viewChild } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal, viewChild, ChangeDetectionStrategy } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup } from "@angular/material/tabs";
@@ -13,6 +13,7 @@ import { CoursesService } from '../services/courses.service';
   imports: [MatTabGroup, MatTab, CoursesCardListComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class HomeComponent implements OnInit {
